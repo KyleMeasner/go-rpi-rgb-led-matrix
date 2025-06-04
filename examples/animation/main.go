@@ -6,8 +6,8 @@ import (
 	"image/color"
 	"time"
 
+	rgbmatrix "github.com/KyleMeasner/go-rpi-rgb-led-matrix"
 	"github.com/fogleman/gg"
-	"github.com/mcuadros/go-rpi-rgb-led-matrix"
 )
 
 var (

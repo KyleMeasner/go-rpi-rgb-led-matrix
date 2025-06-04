@@ -1,11 +1,10 @@
-module rgbmatrix
+module github.com/KyleMeasner/go-rpi-rgb-led-matrix
 
 go 1.24.3
 
 require (
 	github.com/disintegration/imaging v1.6.2
 	github.com/fogleman/gg v1.3.0
-	github.com/mcuadros/go-rpi-rgb-led-matrix v0.0.0-20180401002551-b26063b3169a
 	golang.org/x/exp/shiny v0.0.0-20250531010427-b6e5de432a8b
 	golang.org/x/mobile v0.0.0-20250520180527-a1d90793fc63
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c

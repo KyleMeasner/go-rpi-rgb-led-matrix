@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
+	rgbmatrix "github.com/KyleMeasner/go-rpi-rgb-led-matrix"
 	"github.com/disintegration/imaging"
-	"github.com/mcuadros/go-rpi-rgb-led-matrix"
 )
 
 var (
