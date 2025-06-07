@@ -173,7 +173,9 @@ func NewRGBLedMatrix(config *HardwareConfig) (c Matrix, err error) {
 	}
 
 	w, h := config.geometry()
-	m := C.led_matrix_create_from_options(config.toC(), nil, nil)
+	cargc := C.int(len(os.Args))
+	cargv := stringsToC(os.Args)
+	m := C.led_matrix_create_from_options(config.toC(), &cargc, &cargv)
 	b := C.led_matrix_create_offscreen_canvas(m)
 	c = &RGBLedMatrix{
 		Config: config,
@@ -187,6 +189,18 @@ func NewRGBLedMatrix(config *HardwareConfig) (c Matrix, err error) {
 	}
 
 	return c, nil
+}
+
+func stringsToC(s []string) **C.char {
+	cArray := C.malloc(C.size_t(len(s)) * C.size_t(unsafe.Sizeof(uintptr(0))))
+
+	a := (*[2000]*C.char)(cArray)
+
+	for idx, substring := range s {
+		a[idx] = C.CString(substring)
+	}
+
+	return (**C.char)(cArray)
 }
 
 func isMatrixEmulator() bool {
