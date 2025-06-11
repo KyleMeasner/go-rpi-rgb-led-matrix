@@ -7,16 +7,20 @@ import (
 )
 
 type TerminalEmulator struct {
-	Width  int
-	Height int
-	Pixels []color.Color
+	Width            int
+	Height           int
+	Pixels           []color.Color
+	ShowRefreshRate  bool
+	RenderTimestamps []time.Time
 }
 
-func NewTerminalEmulator(width, height int) *TerminalEmulator {
+func NewTerminalEmulator(width, height int, showRefreshRate bool) *TerminalEmulator {
 	return &TerminalEmulator{
-		Width:  width,
-		Height: height,
-		Pixels: make([]color.Color, width*height),
+		Width:            width,
+		Height:           height,
+		Pixels:           make([]color.Color, width*height),
+		ShowRefreshRate:  showRefreshRate,
+		RenderTimestamps: []time.Time{},
 	}
 }
 
@@ -51,7 +55,18 @@ func (t *TerminalEmulator) Apply([]color.Color) error {
 		fmt.Println()
 	}
 
-	time.Sleep(50 * time.Millisecond)
+	t.RenderTimestamps = append(t.RenderTimestamps, time.Now())
+	if len(t.RenderTimestamps) > 60 {
+		t.RenderTimestamps = t.RenderTimestamps[1:]
+	}
+	if t.ShowRefreshRate && len(t.RenderTimestamps) == 60 {
+		timeElapsed := t.RenderTimestamps[59].Sub(t.RenderTimestamps[0])
+		adjustment := 1 / timeElapsed.Seconds()
+		refreshRate := (60 / timeElapsed.Seconds()) * adjustment
+		fmt.Printf("\033[39m\033[49m%.2f FPS", refreshRate)
+	}
+
+	time.Sleep(10 * time.Millisecond)
 	fmt.Printf("\033[%dA", t.Height+1) // Move cursor up t.Height rows
 	return nil
 }
