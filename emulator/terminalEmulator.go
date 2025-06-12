@@ -66,7 +66,6 @@ func (t *TerminalEmulator) Apply([]color.Color) error {
 		fmt.Printf("\033[39m\033[49m%.2f FPS", refreshRate)
 	}
 
-	time.Sleep(10 * time.Millisecond)
 	fmt.Printf("\033[%dA", t.Height+1) // Move cursor up t.Height rows
 	return nil
 }
